@@ -5,15 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnCount="2"
+        android:rowCount="3">
+        <org.opencv.android.JavaCameraView
+            android:id="@+id/activity_surface_view"
+            android:layout_rowSpan="3"
+            android:layout_gravity="fill"
+            android:gravity="center"/>
+        <Button android:text="connection"
+            android:id="@+id/connection"/>
+        <Button android:text="land"
+            android:id="@+id/move"/>
+        <Button android:text="manual"
+            android:id="@+id/control"/>
 
-    <TextView
-        android:id="@+id/sample_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    </GridLayout>
 
 </android.support.constraint.ConstraintLayout>

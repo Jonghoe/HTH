@@ -1,6 +1,7 @@
 package com.hth.autoselfdrivingdrone.drone;
 
-public interface IDroneConnector {
+public interface IDroneComunicator {
     boolean connectWithDrone();
+    void sendControlData();
     boolean isConnected();
 }
