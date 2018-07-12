@@ -50,11 +50,11 @@ public class MainActivity extends AppCompatActivity  implements CameraBridgeView
         System.loadLibrary("native-lib");
     }
 
-    public native void ConvertRGBtoGray(long matAddrInput, long matAddrResult);
+    public native double[] detectFromDarknet(long matAddrInput);
 
     private CameraBridgeViewBase mOpenCvCameraView;
     private Mat matInput;
-    private Mat matResult;
+    private double controlResult[]=new double[4];
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
@@ -346,7 +346,6 @@ public class MainActivity extends AppCompatActivity  implements CameraBridgeView
      * A native method that is implemented by the 'native-lib' native library,
      * which is packaged with this application.
      */
-    public native String stringFromJNI();
 
     @Override
     public void onCameraViewStarted(int width, int height) {
@@ -363,12 +362,9 @@ public class MainActivity extends AppCompatActivity  implements CameraBridgeView
 
         matInput = inputFrame.rgba();
 
-        if ( matResult != null ) matResult.release();
-        matResult = new Mat(matInput.rows(), matInput.cols(), matInput.type());
+        double[] result = detectFromDarknet(matInput.getNativeObjAddr());
 
-        ConvertRGBtoGray(matInput.getNativeObjAddr(), matResult.getNativeObjAddr());
-
-        return matResult;
+        return matInput;
     }
     //여기서부턴 퍼미션 관련 메소드
     static final int PERMISSIONS_REQUEST_CODE = 1000;
