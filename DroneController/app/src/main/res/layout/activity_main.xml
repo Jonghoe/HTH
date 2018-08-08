@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnCount="2"
+        android:rowCount="3">
+        <org.opencv.android.JavaCameraView
+            android:id="@+id/activity_surface_view"
+            android:layout_rowSpan="3"
+            android:layout_gravity="fill"
+            android:gravity="center"/>
+        <Button android:text="connection"
+            android:id="@+id/connection"/>
+        <Button android:text="land"
+            android:id="@+id/move"/>
+        <Button android:text="manual"
+            android:id="@+id/control"/>
+
+    </GridLayout>
+
+</android.support.constraint.ConstraintLayout>
