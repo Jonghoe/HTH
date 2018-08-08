@@ -17,8 +17,18 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.front" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.front.autofocus"  android:required="false"/>
+
+    <supports-screens android:resizeable="true"
+        android:smallScreens="true"
+        android:normalScreens="true"
+        android:largeScreens="true"
+        android:anyDensity="true" />
+
     <uses-feature
         android:name="android.hardware.usb.host"
         android:required="false" />
@@ -38,7 +48,7 @@
         <uses-library android:name="com.android.future.usb.accessory" />
         <meta-data
             android:name="com.dji.sdk.API_KEY"
-            android:value="Please enter your App Key here." />
+            android:value="5ea606c06350df8c209cd2b5" />
         <activity
             android:name="dji.sdk.sdkmanager.DJIAoaControllerActivity"
             android:theme="@android:style/Theme.Translucent" >
@@ -53,8 +63,8 @@
         </service>
         <!-- DJI SDK -->
         <activity android:name=".MainActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait">
+            android:screenOrientation="landscape"
+            android:configChanges="keyboardHidden|orientation">>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
