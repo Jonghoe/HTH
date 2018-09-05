@@ -16,7 +16,5 @@ public:
 	bool readyToConnect();
 	SOCKET acceptClient();
 	~Connector();
-	int sendData(char* buffer);
-	int recvData(char* buffer);
 };
 
