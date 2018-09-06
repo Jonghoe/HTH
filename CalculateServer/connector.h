@@ -3,12 +3,10 @@
 #include<Winsock2.h>
 #pragma comment(lib,"ws2_32.lib")
 
-WSADATA gWSA;
-static SOCKET gClientSocket, gServerSocket;
 class Connector
 {
 private:
-	const int port = 8888;
+	const int port = 9999;
 	Connector();
 	static Connector* instance;
 public:
