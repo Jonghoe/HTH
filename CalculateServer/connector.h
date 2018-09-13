@@ -6,12 +6,14 @@
 class Connector
 {
 private:
-	const int port = 9999;
-	Connector();
 	static Connector* instance;
+
+
+private:
+	Connector();
 public:
 	static Connector* GetInstance();	
-	bool readyToConnect();
+	bool readyToConnect(const char ip[], int port);
 	SOCKET acceptClient();
 	~Connector();
 };

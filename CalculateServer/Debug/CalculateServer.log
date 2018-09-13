@@ -1,2 +1,32 @@
-﻿  CalculateServer.cpp
-  CalculateServer.vcxproj -> C:\Users\rnwhd\Desktop\git\HTH\CalculateServer\Debug\CalculateServer.exe
+﻿CalculateServer.obj : error LNK2019: _av_frame_alloc 외부 기호(참조 위치: _main 함수)에서 확인하지 못했습니다.
+CalculateServer.obj : error LNK2019: _avcodec_alloc_context3 외부 기호(참조 위치: _main 함수)에서 확인하지 못했습니다.
+CalculateServer.obj : error LNK2019: _avcodec_open2 외부 기호(참조 위치: _main 함수)에서 확인하지 못했습니다.
+CalculateServer.obj : error LNK2019: _av_packet_alloc 외부 기호(참조 위치: _main 함수)에서 확인하지 못했습니다.
+CalculateServer.obj : error LNK2019: _avcodec_find_decoder 외부 기호(참조 위치: _main 함수)에서 확인하지 못했습니다.
+CalculateServer.obj : error LNK2019: _av_parser_init 외부 기호(참조 위치: _main 함수)에서 확인하지 못했습니다.
+C:\Users\rnwhd\Desktop\git\HTH\library\opencv3.4\x64\vc15\lib\opencv_dnn342d.lib : warning LNK4272: 'x64' 라이브러리 컴퓨터 종류가 'x86' 대상 컴퓨터 종류와 충돌합니다.
+C:\Users\rnwhd\Desktop\git\HTH\library\opencv3.4\x64\vc15\lib\opencv_calib3d342d.lib : warning LNK4272: 'x64' 라이브러리 컴퓨터 종류가 'x86' 대상 컴퓨터 종류와 충돌합니다.
+C:\Users\rnwhd\Desktop\git\HTH\library\opencv3.4\x64\vc15\lib\opencv_core342d.lib : warning LNK4272: 'x64' 라이브러리 컴퓨터 종류가 'x86' 대상 컴퓨터 종류와 충돌합니다.
+C:\Users\rnwhd\Desktop\git\HTH\library\opencv3.4\x64\vc15\lib\opencv_features2d342d.lib : warning LNK4272: 'x64' 라이브러리 컴퓨터 종류가 'x86' 대상 컴퓨터 종류와 충돌합니다.
+C:\Users\rnwhd\Desktop\git\HTH\library\opencv3.4\x64\vc15\lib\opencv_flann342d.lib : warning LNK4272: 'x64' 라이브러리 컴퓨터 종류가 'x86' 대상 컴퓨터 종류와 충돌합니다.
+C:\Users\rnwhd\Desktop\git\HTH\library\opencv3.4\x64\vc15\lib\opencv_highgui342d.lib : warning LNK4272: 'x64' 라이브러리 컴퓨터 종류가 'x86' 대상 컴퓨터 종류와 충돌합니다.
+C:\Users\rnwhd\Desktop\git\HTH\library\opencv3.4\x64\vc15\lib\opencv_imgcodecs342d.lib : warning LNK4272: 'x64' 라이브러리 컴퓨터 종류가 'x86' 대상 컴퓨터 종류와 충돌합니다.
+C:\Users\rnwhd\Desktop\git\HTH\library\opencv3.4\x64\vc15\lib\opencv_imgproc342d.lib : warning LNK4272: 'x64' 라이브러리 컴퓨터 종류가 'x86' 대상 컴퓨터 종류와 충돌합니다.
+C:\Users\rnwhd\Desktop\git\HTH\library\opencv3.4\x64\vc15\lib\opencv_ml342d.lib : warning LNK4272: 'x64' 라이브러리 컴퓨터 종류가 'x86' 대상 컴퓨터 종류와 충돌합니다.
+C:\Users\rnwhd\Desktop\git\HTH\library\opencv3.4\x64\vc15\lib\opencv_objdetect342d.lib : warning LNK4272: 'x64' 라이브러리 컴퓨터 종류가 'x86' 대상 컴퓨터 종류와 충돌합니다.
+C:\Users\rnwhd\Desktop\git\HTH\library\opencv3.4\x64\vc15\lib\opencv_photo342d.lib : warning LNK4272: 'x64' 라이브러리 컴퓨터 종류가 'x86' 대상 컴퓨터 종류와 충돌합니다.
+C:\Users\rnwhd\Desktop\git\HTH\library\opencv3.4\x64\vc15\lib\opencv_shape342d.lib : warning LNK4272: 'x64' 라이브러리 컴퓨터 종류가 'x86' 대상 컴퓨터 종류와 충돌합니다.
+C:\Users\rnwhd\Desktop\git\HTH\library\opencv3.4\x64\vc15\lib\opencv_stitching342d.lib : warning LNK4272: 'x64' 라이브러리 컴퓨터 종류가 'x86' 대상 컴퓨터 종류와 충돌합니다.
+C:\Users\rnwhd\Desktop\git\HTH\library\opencv3.4\x64\vc15\lib\opencv_superres342d.lib : warning LNK4272: 'x64' 라이브러리 컴퓨터 종류가 'x86' 대상 컴퓨터 종류와 충돌합니다.
+C:\Users\rnwhd\Desktop\git\HTH\library\opencv3.4\x64\vc15\lib\opencv_video342d.lib : warning LNK4272: 'x64' 라이브러리 컴퓨터 종류가 'x86' 대상 컴퓨터 종류와 충돌합니다.
+C:\Users\rnwhd\Desktop\git\HTH\library\opencv3.4\x64\vc15\lib\opencv_videoio342d.lib : warning LNK4272: 'x64' 라이브러리 컴퓨터 종류가 'x86' 대상 컴퓨터 종류와 충돌합니다.
+C:\Users\rnwhd\Desktop\git\HTH\library\opencv3.4\x64\vc15\lib\opencv_videostab342d.lib : warning LNK4272: 'x64' 라이브러리 컴퓨터 종류가 'x86' 대상 컴퓨터 종류와 충돌합니다.
+C:\Users\rnwhd\Desktop\git\HTH\library\ffmpeg\lib\swscale.lib : warning LNK4272: 'x64' 라이브러리 컴퓨터 종류가 'x86' 대상 컴퓨터 종류와 충돌합니다.
+C:\Users\rnwhd\Desktop\git\HTH\library\ffmpeg\lib\swresample.lib : warning LNK4272: 'x64' 라이브러리 컴퓨터 종류가 'x86' 대상 컴퓨터 종류와 충돌합니다.
+C:\Users\rnwhd\Desktop\git\HTH\library\ffmpeg\lib\postproc.lib : warning LNK4272: 'x64' 라이브러리 컴퓨터 종류가 'x86' 대상 컴퓨터 종류와 충돌합니다.
+C:\Users\rnwhd\Desktop\git\HTH\library\ffmpeg\lib\avutil.lib : warning LNK4272: 'x64' 라이브러리 컴퓨터 종류가 'x86' 대상 컴퓨터 종류와 충돌합니다.
+C:\Users\rnwhd\Desktop\git\HTH\library\ffmpeg\lib\avformat.lib : warning LNK4272: 'x64' 라이브러리 컴퓨터 종류가 'x86' 대상 컴퓨터 종류와 충돌합니다.
+C:\Users\rnwhd\Desktop\git\HTH\library\ffmpeg\lib\avfilter.lib : warning LNK4272: 'x64' 라이브러리 컴퓨터 종류가 'x86' 대상 컴퓨터 종류와 충돌합니다.
+C:\Users\rnwhd\Desktop\git\HTH\library\ffmpeg\lib\avdevice.lib : warning LNK4272: 'x64' 라이브러리 컴퓨터 종류가 'x86' 대상 컴퓨터 종류와 충돌합니다.
+C:\Users\rnwhd\Desktop\git\HTH\library\ffmpeg\lib\avcodec.lib : warning LNK4272: 'x64' 라이브러리 컴퓨터 종류가 'x86' 대상 컴퓨터 종류와 충돌합니다.
+C:\Users\rnwhd\Desktop\git\HTH\CalculateServer\Debug\CalculateServer.exe : fatal error LNK1120: 6개의 확인할 수 없는 외부 참조입니다.

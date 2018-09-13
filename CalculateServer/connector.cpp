@@ -19,7 +19,7 @@ Connector* Connector::GetInstance()
 	return instance;
 }
 
-bool Connector::readyToConnect()
+bool Connector::readyToConnect(const char ip[],int port)
 {
 	if (WSAStartup(MAKEWORD(2, 2), &gWSA )!= 0) {
 		return false;
@@ -28,7 +28,7 @@ bool Connector::readyToConnect()
 	if ((gServerSocket = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET) {
 		return false;
 	}
-	gServerAddr.sin_addr.s_addr = inet_addr("192.168.0.2");
+	gServerAddr.sin_addr.s_addr = inet_addr(ip);
 	gServerAddr.sin_family = AF_INET;
 	gServerAddr.sin_port = htons(port);
 	int bindRetV = bind(gServerSocket, (struct sockaddr*)&gServerAddr, sizeof(gServerAddr));
