@@ -1,97 +1,122 @@
 #include"VideoDecoder.h"
+VideoDecoder* VideoDecoder::m_pInstance = NULL;
+VideoDecoder* VideoDecoder::GetInstance()
+{
+	if (m_pInstance == nullptr)
+		m_pInstance = new VideoDecoder();
+	return m_pInstance;
+}
 
-#define INBUF_SIZE 4096
-
-static AVPacket *gPkt;
-static const AVCodec *gCodec;
-static AVCodecParserContext *gParser;
-static AVCodecContext *gContext = NULL;
-static AVFormatContext *gFContext = NULL;
-static AVFrame *gFrame;
-static AVCodec *gVideoCodec;
-static uint8_t inbuf[INBUF_SIZE + AV_INPUT_BUFFER_PADDING_SIZE];
-
-static int nVSI = -1;
-static int nASI = -1;
-
-bool VideoDecoder::ready(const char* ip)
+bool VideoDecoder::ready()
 {
 	av_register_all();
-	int ret = avformat_open_input(&gFContext, ip, NULL, NULL);
+	avcodec_register_all();
+	avformat_network_init();
 
-	if (ret != 0) {
-		av_log(NULL, AV_LOG_ERROR, "File [%s] Open Fail (ret: %d)\n", ret);
+	m_pCodecPaser = av_parser_init(AV_CODEC_ID_H264);
+	m_pAVCodec = avcodec_find_decoder(AV_CODEC_ID_H264);
+	if (!m_pAVCodec)
+	{
+		fprintf(stderr, "Codec not found\n");
 		return false;
 	}
-	ret = avformat_find_stream_info(gFContext, NULL);
-	if (ret < 0) {
-		av_log(NULL, AV_LOG_ERROR, "Fail to get Stream Information\n");
-		exit(-1);
-	}
-	int i;
-	for (i = 0; i < gFContext->nb_streams; i++) {
-		if (nVSI < 0 && gFContext->streams[i]->codec->codec_type == AVMEDIA_TYPE_VIDEO) {
-			nVSI = i;
-		}
-		else if (nASI < 0 && gFContext->streams[i]->codec->codec_type == AVMEDIA_TYPE_AUDIO) {
-			nASI = i;
-		}
-	}
-
-	if (nVSI < 0 && nASI < 0) {
-		av_log(NULL, AV_LOG_ERROR, "No Video & Audio Streams were Found\n");
+	m_pCodecCtx = avcodec_alloc_context3(m_pAVCodec);
+	if (!m_pCodecCtx)
+	{
+		fprintf(stderr, "Could not allocate video codec context\n");
 		return false;
 	}
+	avcodec_get_context_defaults3(m_pCodecCtx, m_pAVCodec);
+	m_pCodecCtx->thread_count = 4;
+	m_pCodecCtx->thread_type = FF_THREAD_FRAME;
 
-	gVideoCodec = avcodec_find_decoder(gFContext->streams[nVSI]->codec->codec_id);
-	if (gVideoCodec == NULL) {
-		av_log(NULL, AV_LOG_ERROR, "No Video Decoder was Found\n");
+	if (avcodec_open2(m_pCodecCtx, m_pAVCodec, nullptr) < 0)
+	{
+		fprintf(stderr, "Could not open codec\n");
 		return false;
 	}
 
-	///> Initialize Codec Context as Decoder
-	if (avcodec_open2(gFContext->streams[nVSI]->codec, gVideoCodec, NULL) < 0) {
-		av_log(NULL, AV_LOG_ERROR, "Fail to Initialize Decoder\n");
+	m_pFrame = av_frame_alloc();
+
+	if (!m_pFrame)
+	{
+		fprintf(stderr, "Could not allocate video frame\n");
 		return false;
 	}
 
+	std::cout << "ffmpeg ready" << std::endl;
 	return true;
 }
 
-void VideoDecoder::Decode(ImageProcess* processor)
+
+int VideoDecoder::parse(uint8_t * pBuff, int videosize, uint64_t pts)
 {
-	AVCodecContext *pVCtx = gFContext->streams[nVSI]->codec;
+	int paserLength_In = videosize;
+	int paserLen;
+	int got_picture = 0;
+	uint8_t *pFrameBuff = (uint8_t*)pBuff;
+	while (paserLength_In > 0)
+	{
+		AVPacket packet;
+		av_init_packet(&packet);
 
-	AVPacket pkt;
-	AVFrame* pVFrame;
-	int bGotPicture = 0;	// flag for video decoding
+		paserLen = av_parser_parse2(m_pCodecPaser, m_pCodecCtx, &packet.data, &packet.size, pFrameBuff,
+			paserLength_In, AV_NOPTS_VALUE, AV_NOPTS_VALUE, AV_NOPTS_VALUE);
 
-	pVFrame = av_frame_alloc();
+		paserLength_In -= paserLen;
+		pFrameBuff += paserLen;
 
-
-	while (av_read_frame(gFContext, &pkt) >= 0) {
-		///> Decoding
-		if (pkt.stream_index == nVSI) {
-			if (avcodec_decode_video2(pVCtx, pVFrame, &bGotPicture, &pkt) >= 0) {
-				if (bGotPicture) {
-					//write_I420_frame(szSaveDecodedVideoFilePath, pVFrame);
-					cv::Mat out;
-					avframeToMat(pVFrame, out);
-					processor->process(out);
+		if (packet.size > 0)
+		{
+			int got_frame;
+			int len = avcodec_decode_video2(m_pCodecCtx, m_pFrame, &got_frame, &packet);
+			if (len >= 0 && got_frame)
+			{
+				cv::Mat img;
+				VideoDecoder::avframeToMat(m_pFrame, img);				
+				//if (retv == 1) {
+					cv::imshow("sender", img);
 					cv::waitKey(1);
-				}
+				//}
+				return 1;
 			}
-			// else ( < 0 ) : Decoding Error
 		}
-		///> Free the packet that was allocated by av_read_frame
-		av_free_packet(&pkt);
+		av_free_packet(&packet);
 	}
 
-	av_free(pVFrame);
-	///> Close an opened input AVFormatContext. 
-	avformat_close_input(&gFContext);
+	return 0;
 }
 
+int VideoDecoder::parse(uint8_t * buff, int size)
+{
+	uint8_t audbuffer2[] = { 0x00,0x00,0x00,0x01,0x09,0x10 };
+	uint8_t audsize2 = 6;
+	uint8_t fillerbuffer2[] = { 0x00,0x00,0x00,0x01,0x0C,0x00,0x00,0x00,0x01,0x09,0x10 };
+	uint8_t fillersize2 = 11;
+	uint8_t audaudbuffer2[] = { 0x00,0x00,0x00,0x01,0x09,0x10, 0x00,0x00,0x00,0x01,0x09,0x10 };
+	uint8_t audaudsize2 = 12;
+	int retv = 0;
+	uint64_t pts = 0;
+
+	// Removing the aud bytes.
+	if (size >= fillersize2 && memcmp(fillerbuffer2, buff + size - fillersize2, fillersize2) == 0)
+	{
+		parse(buff, size - fillersize2, pts);
+	}
+	else if (size >= audaudsize2 && memcmp(audaudbuffer2, buff + size - audaudsize2, audaudsize2) == 0)
+	{
+		parse(buff, size - audaudsize2, pts);
+	}
+	else if (size >= audsize2 && memcmp(audbuffer2, buff + size - audsize2, audsize2) == 0)
+	{
+		parse(buff, size - audsize2, pts);
+	}
+	else
+	{
+		parse(buff, size, pts);
+	}
+	return retv;
+}
 
 void VideoDecoder::avframeToMat(const AVFrame * frame, cv::Mat& image)
 {

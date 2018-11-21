@@ -1,10 +1,10 @@
 #include "connector.h"
-
+#include <mutex>
 static WSADATA gWSA;
 static SOCKET gClientSocket, gServerSocket;
 static int gClientLen;
 static struct sockaddr_in gServerAddr,gClientAddr;
-
+static std::mutex thread_lock;
 Connector* Connector::instance = NULL;
 
 Connector::Connector()
@@ -21,6 +21,7 @@ Connector* Connector::GetInstance()
 
 bool Connector::readyToConnect(const char ip[],int port)
 {
+	thread_lock.lock();
 	if (WSAStartup(MAKEWORD(2, 2), &gWSA )!= 0) {
 		return false;
 	}
@@ -46,12 +47,15 @@ bool Connector::readyToConnect(const char ip[],int port)
 
 SOCKET Connector::acceptClient()
 {
+	SOCKET retV;
 	gClientLen = sizeof(struct sockaddr_in);
 	gClientSocket = accept(gServerSocket, (struct sockaddr *)&gClientAddr, &gClientLen);
-	if (gClientSocket == INVALID_SOCKET)
+	retV = gClientSocket;
+	thread_lock.unlock();
+	if (retV== INVALID_SOCKET)
 		return NULL;
 	else
-		return gClientSocket;
+		return retV;
 }
 
 Connector::~Connector()

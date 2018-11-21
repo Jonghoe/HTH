@@ -14,20 +14,25 @@ extern "C" {
 	#include<libswscale/swscale.h>
 	#include<libavformat/avio.h>
 	#include<libavformat/avformat.h>
-	#include<libavcodec/avcodec.h>
+	#include<libavcodec/avcodec.h>		
 }
-
 
 class VideoDecoder 
 {
 private:
-	static void avframeToMat(const AVFrame * frame, cv::Mat& image);
-
+	VideoDecoder(){}
 public:
-	static bool ready(const char* ip);
-	static void Decode(ImageProcess*);
+	static VideoDecoder* GetInstance();
+	bool ready();
+	static void avframeToMat(const AVFrame * frame, cv::Mat& image);
+	int parse(uint8_t* pBuff, int videosize, uint64_t pts);
+	int parse(uint8_t* buffer, int size);
 
 private:
-	static uint8_t* buffer;
-	static int len;
+	static VideoDecoder* m_pInstance;
+	AVCodecParserContext* m_pCodecPaser;
+	AVCodec* m_pAVCodec;
+	AVCodecContext *m_pCodecCtx;
+	AVFrame* m_pFrame;
+
 };
